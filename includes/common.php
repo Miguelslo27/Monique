@@ -992,72 +992,84 @@ function deleteArticle ($id) {
 
 /* PEDIDOS */
 function agregarAlPedido ($id, $cantidad, $esPack = 'true', $talle = NULL, $color = NULL) {
-
 	$user = loadUser();
 
-	if (!$user || $user == "") {
+	if ((!$user || $user['user'] == "") && !isset($_SESSION['temp_userid'])) {
+		// Algoritmo del temp_userid
+		$ipToNumber = (int) implode('', explode('.', getRealIP()));
+		$timeLength = time();
+		// var_dump($ipToNumber);
+		// var_dump($timeLength);
+		// var_dump($ipToNumber + $timeLength);
 
-		return array('status' => 'error', 'error' => 'USER_UNAUTORIZED');
+		// Guardo un user id temporal igual al timestam actual
+		$temp_userid = $ipToNumber + $timeLength;
 
+		// Guardo ese user id temporal en la sesión
+		$_SESSION['temp_userid'] = $temp_userid;
+
+		// echo 'Temporal User ID first time';
+
+		// return array('status' => 'error', 'error' => 'USER_UNAUTORIZED');
+	} else {
+		if (!$user || $user['user'] == "") {
+			// Guardo el user ID para guardar el pedido
+			$temp_userid = $_SESSION['temp_userid'];
+
+			// echo 'Temporal User ID second time';
+		} else {
+			$temp_userid = $user['user']->id;
+
+			// echo 'Temproal User ID that is not temporal';
+		}
 	}
+
+	$userid = $temp_userid;
+
+	// var_dump($userid);
+	// exit;
 
 	// checar si hay un pedido abierto (1 : pendiente, 2 : cancelado, 3 : aprobado, 4 : abierto, 5 : cerrado)
 	$estafecha = time() - (2 * 24 * 60 * 60);
 	$esPack = $esPack == 'true' ? true : false;
 
 	$db = $GLOBALS['db'];
-	// $sql_reuse = 'SELECT `id`, `fecha`, `total`, `cantidad`, `estado` FROM `dev_pedido` WHERE `usuario_id` = "' . $user['user']->id . '" AND `estado` = 4 AND `fecha` >= "' . date('Y/m/d', $estafecha) .'"';
-	$sql_reuse = 'SELECT `id`, `fecha`, `total`, `cantidad`, `estado` FROM `pedido` WHERE `usuario_id` = "' . $user['user']->id . '" AND `estado` = 4 AND `fecha` >= "' . date('Y/m/d', $estafecha) .'"';
+	$sql_reuse = 'SELECT `id`, `fecha`, `total`, `cantidad`, `estado` FROM `pedido` WHERE `usuario_id` = "' . $userid . '" AND `estado` = 4 AND `fecha` >= "' . date('Y/m/d', $estafecha) .'"';
 	$pedido = $db->getObjeto($sql_reuse);
 
 	$pedidoId = NULL;
 
 	if ($pedido) {
-
 		// si hay pedido
 		// guardo el id de este pedido
 		$pedidoId = $pedido->id;
-
 	} else {
-
 		// creo el pedido con estado abierto
 		$h = "-3";
 		$hm = $h * 60; 
 		$ms = $hm * 60;
-		$gmdate = gmdate("Y-m-d H:i:s", time()+($ms));
+		$gmdate = gmdate("Y-m-d H:i:s", time() + ($ms));
 
-		// $sql = 'INSERT INTO `dev_pedido` (`usuario_id`, `fecha`, `total`, `cantidad`, `estado`) VALUES ("' . $user['user']->id .'", "' . $gmdate . '", 0, 0, 4)';
-		$sql = 'INSERT INTO `pedido` (`usuario_id`, `fecha`, `total`, `cantidad`, `estado`) VALUES ("' . $user['user']->id .'", "' . $gmdate . '", 0, 0, 4)';
+		$sql = 'INSERT INTO `pedido` (`usuario_id`, `fecha`, `total`, `cantidad`, `estado`) VALUES ("' . $userid .'", "' . $gmdate . '", 0, 0, 4)';
 		$pedidoId = $db->insert($sql);
 
 		// controlar pedido, si no existe retornar error
 		if (!$pedidoId) {
-
 			return array('status' => 'error', 'error' => 'INVOICE_DOESNT_EXIST');
-
 		}
 
 		$pedido = $db->getObjeto($sql_reuse);
-
 	}
 
 	// obtengo el articulo para extraer los datos necesarios para el pedido
-	// $sql = 'SELECT `packs`, `colores_url`, `talle`, `oferta`, `surtido`, `precio`, `precio_oferta`, `precio_surtido`, `precio_oferta_surtido` FROM `dev_articulo` WHERE `id`=' . $id;
 	$sql = 'SELECT `packs`, `colores_url`, `colores_surtidos_url`, `talle`, `talle_surtido`, `oferta`, `surtido`, `precio`, `precio_oferta`, `precio_surtido`, `precio_oferta_surtido` FROM `articulo` WHERE `id`=' . $id;
 	$articulo = $db->getObjeto($sql);
 	
 	// controlar articulo, si no existe retornar error
 	if (!$articulo) {
-
 		return array('status' => 'error', 'error' => 'ITEM_DOESNT_EXIST');
-
 	}
 
-	// actualizo el pedido con la cantidad y el total
-	// $articulo_precio = ($articulo->oferta == 1 ? $articulo->precio_oferta : $articulo->precio);
-	// echo '// ' . ($pedido->total + ($articulo_precio * ((int) str_replace(array("pack x", "pack x ", "X", "x", "X ", "x ", "packs x", "packs x ", "Packs X", "Packs X ", "PACKS X", "PACKS X ", "Pack x", "Pack x "), "", $articulo->packs) * $cantidad))) . "\n";
-	// echo '// ' . ((int) str_replace(array("pack x", "pack x ", "X", "x", "X ", "x ", "packs x", "packs x ", "Packs X", "Packs X ", "PACKS X", "PACKS X ", "Pack x", "Pack x "), "", $articulo->packs)) . "\n";
-	
 	// Chequeo el precio si es pack o surtido y lo actualizo en el pedido
 	if($esPack) {
 		$articulo_precio = (($articulo->oferta == 1 && $articulo->precio_oferta > 0) ? $articulo->precio_oferta : $articulo->precio);
@@ -1084,14 +1096,10 @@ function agregarAlPedido ($id, $cantidad, $esPack = 'true', $talle = NULL, $colo
 				}
 				
 				$colors = implode(',', $auxColors);
-				
 			}
-			
 		}
-		
 	} else {
 		$articulo_precio = 0;
-		// ($articulo->oferta == 1 ? $articulo->precio_oferta_surtido : $articulo->precio_surtido)
 		if($articulo->oferta == 1) {
 			$articulo_precio = ($articulo->precio_oferta_surtido > 0 ? $articulo->precio_oferta_surtido : ($articulo->precio_surtido > 0 ? $articulo->precio_surtido : ($articulo->precio_oferta > 0 ? $articulo->precio_oferta : $articulo->precio)));
 		} else {
@@ -1116,15 +1124,10 @@ function agregarAlPedido ($id, $cantidad, $esPack = 'true', $talle = NULL, $colo
 	$pedido = $db->getObjeto($sql_reuse);
 
 	if ($rId) {
-
 		return array('status' => 'ok', 'pedido' => $pedido);
-
 	} else {
-
 		return array('status' => 'error', 'error' => 'DB_ERROR');
-
 	}
-
 }
 
 function eliminarDelPedido ($idpedido, $itemid, $pedidoid, $precioitem, $cantidaditem, $totalpedido, $cantidaditemstotal) {
@@ -1531,6 +1534,27 @@ function custom_error_log($msg = null, $line = null, $file = null, $function = n
     }
 
     error_log(date('d/m/Y H:i:s').' :: '.$file.' :: '.$function.' :: '.$line.': '.$msg."\n", 3, "../../error.txt");
+}
+
+function getRealIP() {
+    if (isset($_SERVER["HTTP_CLIENT_IP"])) {
+        return $_SERVER["HTTP_CLIENT_IP"];
+    }
+    elseif (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
+        return $_SERVER["HTTP_X_FORWARDED_FOR"];
+    }
+    elseif (isset($_SERVER["HTTP_X_FORWARDED"])) {
+        return $_SERVER["HTTP_X_FORWARDED"];
+    }
+    elseif (isset($_SERVER["HTTP_FORWARDED_FOR"])) {
+        return $_SERVER["HTTP_FORWARDED_FOR"];
+    }
+    elseif (isset($_SERVER["HTTP_FORWARDED"])) {
+        return $_SERVER["HTTP_FORWARDED"];
+    }
+    else {
+        return $_SERVER["REMOTE_ADDR"];
+    }
 }
 
 ?>
