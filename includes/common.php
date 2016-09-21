@@ -92,41 +92,36 @@ $db = new DB($config['db_dbase'], $config['db_host'], $config['db_user'], $confi
 
 /* USUARIO */
 function loadUser ($login = NULL) {
+	if (isset($_SESSION['temp_userid'])) {
+		$tempuserid = $_SESSION['temp_userid'];
+		$pedido     = obtenerPedidoAbierto($tempuserid);
+	} else {
+		$pedido = NULL;
+	}
 
 	// si no hay usuario ingresado
 	if (!isset($_SESSION['usuario'])) {
-
 		// chequeo si hay usuarios en la base de datos (solo la primera vez)
 		if (checkUsers()) {
-
 			$email = isset($_POST['email']) ? $_POST['email'] : '';
 			$pass = isset($_POST['pass']) ? $_POST['pass'] : '';
 
+
 			if ((!$email || !$pass) && $login == "login") {
-
-				return array('user' => NULL, 'cart' => NULL,  'status' => 'ERROR_EMAIL_OR_PASS');
-
+				return array('user' => NULL, 'cart' => $pedido,  'status' => 'ERROR_EMAIL_OR_PASS');
 			} elseif (!$email && !$pass) {
-
-				return array('user' => NULL, 'cart' => NULL,  'status' => 'READY_TO_LOGIN');
-
+				return array('user' => NULL, 'cart' => $pedido,  'status' => 'READY_TO_LOGIN');
 			}
 
 			return loginUser($email, $pass);
-
 		} else {
-
 			// muestro formulario de registro
-			return array('user' => NULL, 'cart' => NULL,  'status' => 'NO_USERS');
-
+			return array('user' => NULL, 'cart' => $pedido,  'status' => 'NO_USERS');
 		}
-
 	} else {
-
 		$usuario = JSON_decode($_SESSION['usuario']);
 
 		if (checkCurrentUser($usuario->email)) {
-
 			$pedido = obtenerPedidoAbierto($usuario->id);
 
 			return
@@ -135,28 +130,19 @@ function loadUser ($login = NULL) {
 					'cart' => $pedido,
 					'status' => 'LOGGED'
 				);
-
 		} elseif (!checkUsers()) {
-
-			return array('user' => NULL, 'cart' => NULL,  'status' => 'NO_USERS');
-
+			return array('user' => NULL, 'cart' => $pedido,  'status' => 'NO_USERS');
 		} else {
-
 			$email = isset($_POST['email']) ? $_POST['email'] : '';
 			$pass = isset($_POST['pass']) ? $_POST['pass'] : '';
 
 			if (!$email || !$pass) {
-
-				return array('user' => NULL, 'cart' => NULL,  'status' => 'ERROR_EMAIL_OR_PASS');
-
+				return array('user' => NULL, 'cart' => $pedido,  'status' => 'ERROR_EMAIL_OR_PASS');
 			}
 
 			loginUser($email, $pass);
-
 		}
-
 	}
-
 }
 
 function loginUser ($email = NULL, $pass = NULL, $forzarLogin = false) {
