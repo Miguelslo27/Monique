@@ -6,6 +6,7 @@
 				</a>
 				<span class="link-label">/</span>
 				<a href="/registro"><span class="link-label">REGISTRATE</span></a>
+				<a href="/pedido" class="user-menu user-cart"><span class="icon fa fa-2x fa-shopping-cart"></span><span class="link-label">Pedido (<?php echo $userStats['cart'] ? $userStats['cart']->cantidad : 0; ?>)</span></a>
 			</div>
 		    <span class="need-help"><a href="/como-comprar">¿Necesitas ayuda con tu compra?</a></span>
 		    <span class="phone-numbers"><span class="icon fa fa-2x fa-phone"></span><span class="link-label">22003328 / 22098151</span></span>
