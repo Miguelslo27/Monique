@@ -1013,6 +1013,7 @@ function agregarAlPedido ($id, $cantidad, $esPack = 'true', $talle = NULL, $colo
 		// return array('status' => 'error', 'error' => 'USER_UNAUTORIZED');
 	} else {
 		if (!$user || $user['user'] == "") {
+			// var_dump($_SESSION['temp_userid']);
 			// Guardo el user ID para guardar el pedido
 			$temp_userid = $_SESSION['temp_userid'];
 
@@ -1031,13 +1032,11 @@ function agregarAlPedido ($id, $cantidad, $esPack = 'true', $talle = NULL, $colo
 
 	// checar si hay un pedido abierto (1 : pendiente, 2 : cancelado, 3 : aprobado, 4 : abierto, 5 : cerrado)
 	$estafecha = time() - (2 * 24 * 60 * 60);
-	$esPack = $esPack == 'true' ? true : false;
-
-	$db = $GLOBALS['db'];
+	$esPack    = $esPack == 'true' ? true : false;
+	$db        = $GLOBALS['db'];
 	$sql_reuse = 'SELECT `id`, `fecha`, `total`, `cantidad`, `estado` FROM `pedido` WHERE `usuario_id` = "' . $userid . '" AND `estado` = 4 AND `fecha` >= "' . date('Y/m/d', $estafecha) .'"';
-	$pedido = $db->getObjeto($sql_reuse);
-
-	$pedidoId = NULL;
+	$pedido    = $db->getObjeto($sql_reuse);
+	$pedidoId  = NULL;
 
 	if ($pedido) {
 		// si hay pedido
@@ -1060,6 +1059,9 @@ function agregarAlPedido ($id, $cantidad, $esPack = 'true', $talle = NULL, $colo
 
 		$pedido = $db->getObjeto($sql_reuse);
 	}
+
+	// var_dump($pedido);
+	// exit;
 
 	// obtengo el articulo para extraer los datos necesarios para el pedido
 	$sql = 'SELECT `packs`, `colores_url`, `colores_surtidos_url`, `talle`, `talle_surtido`, `oferta`, `surtido`, `precio`, `precio_oferta`, `precio_surtido`, `precio_oferta_surtido` FROM `articulo` WHERE `id`=' . $id;
