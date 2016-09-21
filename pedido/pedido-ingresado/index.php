@@ -27,7 +27,7 @@ loadSection("header", $userStats);
 		color: #aaa;
 	}
 	.body-content h2 {
-		text-align: right;
+		text-align: center;
 		padding-right: 20px;
 		font-weight: bold;
 	}
@@ -35,12 +35,14 @@ loadSection("header", $userStats);
 	<section id="body">
 		<div class="body-inner">
 			<div class="body-content">
-				<h1><span class="fa fa-circle"></span> Gracias por comprar en <span class="fa fa-circle"></span> <span class="marca">Monique.com.uy</span> <span class="fa fa-circle"></span></h1>
-				<!-- <span class="line-h">&nbsp;</span> -->
-				<!-- <h2><a href="/categorias">Continuar comprando</a></h2> -->
+				<h1><span class="fa fa-circle"></span>Su pedido se ha enviado con éxito <span class="fa fa-circle"></span><br><span class="fa fa-circle"></span><span class="marca">Monique.com.uy</span> <span class="fa fa-circle"></span></h1>
+				<span class="line-h">&nbsp;</span>
+				<br>
+				<h2>Revisa tu casilla de correo, en breve recibirás una copia de tu pedido.</h2>
+				<h2>Nos pondremos en contacto en breve.</h2>
 				<script>
 					setTimeout(function () {
-						document.location.href = '/categorias';
+						// document.location.href = '/categorias';
 					}, 2500);
 				</script>
 				
