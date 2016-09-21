@@ -48,17 +48,9 @@ loadSection("header", $userStats);
 		<div class="body-inner">
 				<h1><span class="title-icon"></span><span class="title">Pedido actual</span></h1>
 				<div style="clear: both;"></div>
-				<?php
-					if ($userStats['user']) {
-				?>
-				<?php
-				}
-				?>
 				<div class="body-content">
 					<?php
-					if ($userStats['user']) {
-
-						if ($cartItems) {
+					if ($cartItems) {
 						?>
 					<h2>Hay <?php echo $cartItems['pedido']->cantidad; ?> artículos en tu pedido, por un total de $ <?php echo $cartItems['pedido']->total; ?>,00</h2>
 						<?php
@@ -206,16 +198,6 @@ loadSection("header", $userStats);
 						}
 						?>
 					</div>
-					<?php
-					} else {
-					?>
-					<h2>Para Precios | Pedido y acceder a lista de precios por mayor, debes estar registrado</h2>
-					<span class="line-h">&nbsp;</span>
-					<p></p>
-					<a href="/registro" class="btn btn-style black">Registrarme</a>
-					<?php
-					}
-					?>
 				
 <?php
 

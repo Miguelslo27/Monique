@@ -1144,18 +1144,21 @@ function eliminarDelPedido ($idpedido, $itemid, $pedidoid, $precioitem, $cantida
 }
 
 function obtenerPedido ($idPedido) {
-
 	$pedidoCompleto = array('articulos' => NULL, 'pedido' => NULL);
 
 	$db = $GLOBALS['db'];
-	$sql = 'SELECT `pedido`.*, `usuario`.`nombre`, `usuario`.`apellido`, `usuario`.`rut`, `usuario`.`telefono`, `usuario`.`celular`, `usuario`.`email`  FROM `pedido` JOIN `usuario` ON `pedido`.`usuario_id` = `usuario`.`id`  WHERE `pedido`.`id`=' . $idPedido;
+	$sql = 'SELECT `pedido`.*, `usuario`.`nombre`, `usuario`.`apellido`, `usuario`.`rut`, `usuario`.`telefono`, `usuario`.`celular`, `usuario`.`email` FROM `pedido` JOIN `usuario` ON `pedido`.`usuario_id` = `usuario`.`id` WHERE `pedido`.`id`=' . $idPedido;
 	$pedidoCompleto['pedido'] = $db->getObjeto($sql);
+
+	if (empty($pedidoCompleto['pedido'])) {
+		$sql = 'SELECT `pedido`.* FROM `pedido` WHERE `pedido`.`id`=' . $idPedido;
+		$pedidoCompleto['pedido'] = $db->getObjeto($sql);
+	}
 
 	$sql = 'SELECT `articulo_pedido`.`id` AS `id_pedido`, `articulo_pedido`.`cantidad`, `articulo_pedido`.`subtotal`, `articulo`.`id`, `articulo`.`nombre`, `articulo`.`codigo`, `articulo_pedido`.`surtido`, `articulo_pedido`.`talle`, `articulo_pedido`.`color`, `articulo`.`colores_url`, `articulo`.`colores_surtidos_url`, `articulo`.`imagenes_url` FROM `articulo_pedido` JOIN `articulo` ON `articulo_pedido`.`articulo_id`=`articulo`.`id` WHERE `articulo_pedido`.`pedido_id`=' . $idPedido;
 	$pedidoCompleto['articulos'] = $db->getObjetos($sql);
 
 	return $pedidoCompleto;
-
 }
 
 function obtenerPedidoAbierto ($id_usuario = null) {
