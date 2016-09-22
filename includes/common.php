@@ -175,19 +175,9 @@ function loginUser ($email = NULL, $pass = NULL, $forzarLogin = false) {
 
 			// Si tengo prepedido cambio la pertenencia por la del usuario logueado
 			if($prepedido) {
-				// var_dump($prepedido->id);
-				// var_dump($_SESSION['temp_userid']);
-				// var_dump($usuario->id);
 				$prepedido = cambiarPertenenciaDelPedido($prepedido->id, $usuario->id, $_SESSION['temp_userid']);
 			}
-
-			// var_dump($usuario);
-			// var_dump($prepedido);
 		}
-
-		// var_dump($prepedido);
-		// var_dump($pedido);
-		// exit;
 
 		// Si hay pedido y prepedido, los combino en el pedido abierto del usuario
 		if($pedido && $prepedido) {
@@ -995,9 +985,6 @@ function agregarAlPedido ($id, $cantidad, $esPack = 'true', $talle = NULL, $colo
 		// Algoritmo del temp_userid
 		$ipToNumber = (int) implode('', explode('.', getRealIP()));
 		$timeLength = time();
-		// var_dump($ipToNumber);
-		// var_dump($timeLength);
-		// var_dump($ipToNumber + $timeLength);
 
 		// Guardo un user id temporal igual al timestam actual
 		$temp_userid = $ipToNumber + $timeLength;
@@ -1005,27 +992,16 @@ function agregarAlPedido ($id, $cantidad, $esPack = 'true', $talle = NULL, $colo
 		// Guardo ese user id temporal en la sesión
 		$_SESSION['temp_userid'] = $temp_userid;
 
-		// echo 'Temporal User ID first time';
-
-		// return array('status' => 'error', 'error' => 'USER_UNAUTORIZED');
 	} else {
 		if (!$user || $user['user'] == "") {
-			// var_dump($_SESSION['temp_userid']);
 			// Guardo el user ID para guardar el pedido
 			$temp_userid = $_SESSION['temp_userid'];
-
-			// echo 'Temporal User ID second time';
 		} else {
 			$temp_userid = $user['user']->id;
-
-			// echo 'Temproal User ID that is not temporal';
 		}
 	}
 
 	$userid = $temp_userid;
-
-	// var_dump($userid);
-	// exit;
 
 	// checar si hay un pedido abierto (1 : pendiente, 2 : cancelado, 3 : aprobado, 4 : abierto, 5 : cerrado)
 	$estafecha = time() - (2 * 24 * 60 * 60);
@@ -1056,9 +1032,6 @@ function agregarAlPedido ($id, $cantidad, $esPack = 'true', $talle = NULL, $colo
 
 		$pedido = $db->getObjeto($sql_reuse);
 	}
-
-	// var_dump($pedido);
-	// exit;
 
 	// obtengo el articulo para extraer los datos necesarios para el pedido
 	$sql = 'SELECT `packs`, `colores_url`, `colores_surtidos_url`, `talle`, `talle_surtido`, `oferta`, `surtido`, `precio`, `precio_oferta`, `precio_surtido`, `precio_oferta_surtido` FROM `articulo` WHERE `id`=' . $id;
@@ -1510,9 +1483,6 @@ function cambiarPertenenciaDelPedido($pedidoid, $idNuevoUsuario, $idViejoUsuario
 function combinarPedidos($pedido, $prepedido) {
 	$db = $GLOBALS['db'];
 
-	// var_dump($pedido);
-	// var_dump($prepedido);
-
 	$pedido_cantidad = $pedido->cantidad;
 	$pedido_total    = $pedido->total;
 
@@ -1520,11 +1490,9 @@ function combinarPedidos($pedido, $prepedido) {
 	$sql_prearticulos    = 'SELECT `articulo_pedido`.`id` AS `id_pedido`, `articulo_pedido`.`cantidad`, `articulo_pedido`.`subtotal`, `articulo`.`id`, `articulo`.`nombre`, `articulo`.`codigo`, `articulo_pedido`.`surtido`, `articulo_pedido`.`talle`, `articulo_pedido`.`color`, `articulo`.`colores_url`, `articulo`.`colores_surtidos_url`, `articulo`.`imagenes_url` FROM `articulo_pedido` JOIN `articulo` ON `articulo_pedido`.`articulo_id`=`articulo`.`id` WHERE `articulo_pedido`.`pedido_id`=' . $prepedido->id;
 	$prearticulospedidos = $db->getObjetos($sql_prearticulos);
 
-	// var_dump($prearticulospedidos);
 	// Recorro los articulos pre pedidos
 	foreach($prearticulospedidos as $art_pedido) {
 		// actualizo el total y la cantidad en el pedido
-		// var_dump($art_pedido);
 		$pedido_cantidad = $pedido_cantidad + 1;
 		$pedido_total    = $pedido_total + $art_pedido->subtotal;
 	}
@@ -1543,7 +1511,6 @@ function combinarPedidos($pedido, $prepedido) {
 
 	$pedido_actualizado = obtenerPedidoAbierto($pedido->usuario_id);
 
-	// exit;
 	return $pedido_actualizado;
 }
 
