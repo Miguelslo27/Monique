@@ -68,6 +68,7 @@ switch($_SERVER['HTTP_HOST']) {
 	break;
 	// PROD SERVER ENV
 	case 'monique.com.uy':
+	case 'www.monique.com.uy':
 		$db_dbase  = 'moniquec_db';
 		$dbaseHost = 'localhost';
 		$dbaseUser = 'moniquec_db_adm';
