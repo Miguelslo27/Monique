@@ -17,24 +17,6 @@ $resultado = buscarArticulos($_GET['clave']);
 
 	<section id="body">
 		<div class="body-inner">
-
-
-<?php
-
-if (!$userStats['user']) {
-
-?>
-
-			<h1>No has ingresado al sitio!</h1>
-			<span class="line-h">&nbsp;</span>
-			<div class="body-content">
-				<a href="/registro" class="btn btn-style black">Registrate</a>
-
-<?php
-
-} else {
-
-?>
 			<h1>Resultados de búsqueda</h1>
 			<span class="line-h"></span>
 			<div class="body-content">
@@ -55,8 +37,6 @@ if (!$userStats['user']) {
 				}
 
 				include($templatesPath . 'search-result.php');
-
-}
 
 loadSection("footer", $userStats);
 endDocument();
