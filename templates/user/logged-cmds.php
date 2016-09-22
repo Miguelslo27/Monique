@@ -37,7 +37,7 @@
 				</div> -->
 				<div class="user-info-row">
 					<span class="user-info-label">Pedido actual:</span>
-					<span class="user-info-value">$ <?php echo $userStats['cart']->total; ?>,00</span>
+					<span class="user-info-value">$ <?php echo $userStats['cart'] ? $userStats['cart']->total: '0'; ?>,00</span>
 					<!-- $userStats['cart']->total -->
 				</div>
 

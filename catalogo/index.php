@@ -54,12 +54,13 @@ loadSection("header", $userStats);
 					}
 
 					natcasesort($imagenesDelCatalogo);
+
 					foreach ($imagenesDelCatalogo as $imagen) {
 
 						$directorioDeLaImagen = $directorioDelCatalogo . '/' . $imagen;
 						?>
 						<a href="<?php echo $directorioDeLaImagen; ?>"><img src="<?php echo $directorioDeLaImagen; ?>" width="965"></a>
-						<?
+						<?php
 
 					}
 

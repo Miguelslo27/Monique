@@ -1,8 +1,9 @@
 <?php
-$appPlace = $GLOBALS['appPlace'];
+$appPlace    = $GLOBALS['appPlace'];
 $appSubPlace = $GLOBALS['appSubPlace'];
-$userStats = $GLOBALS['userStats'];
-$revision = 'revision='.rand(1,3000);
+$userStats   = $GLOBALS['userStats'];
+$revision    = 'revision='.rand(1,3000);
+
 switch($place) {
 
 case 'head':

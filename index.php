@@ -1,4 +1,3 @@
-<!-- IN SIDE NEW HOST -->
 <?php
 
 $relative = '.';

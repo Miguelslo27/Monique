@@ -105,8 +105,7 @@ function loadUser ($login = NULL) {
 		// chequeo si hay usuarios en la base de datos (solo la primera vez)
 		if (checkUsers()) {
 			$email = isset($_POST['email']) ? $_POST['email'] : '';
-			$pass = isset($_POST['pass']) ? $_POST['pass'] : '';
-
+			$pass  = isset($_POST['pass']) ? $_POST['pass'] : '';
 
 			if ((!$email || !$pass) && $login == "login") {
 				return array('user' => NULL, 'cart' => $pedido,  'status' => 'ERROR_EMAIL_OR_PASS');
@@ -147,53 +146,64 @@ function loadUser ($login = NULL) {
 }
 
 function loginUser ($email = NULL, $pass = NULL, $forzarLogin = false) {
-
 	if (!$email && !$pass) {
-
 		$email = isset($_POST['email']) ? $_POST['email'] : '';
-		$pass = isset($_POST['pass']) ? $_POST['pass'] : '';
-
+		$pass  = isset($_POST['pass']) ? $_POST['pass'] : '';
 	}
 
 	$email = str_replace(" ", "", strtolower($email));
 
 	if (!$email || !$pass) {
-	exit;
-
+		exit;
 		return array('user' => NULL, 'cart' => NULL,  'status' => 'ERROR_EMAIL_OR_PASS');
-
 	}
 
 	// cargar el usuario por email y pass y retornar los valores
-	$db = $GLOBALS['db'];
-	// $sql = 'SELECT `id`, `nombre`, `apellido`, `rut`, `email`, `direccion`, `telefono`, `celular`, `departamento`, `ciudad`, `administrador` FROM `dev_usuario` WHERE `email` = "' . $email . '" AND `clave` = "' . md5($pass . $email) . '"';
-	$sql = 'SELECT `id`, `nombre`, `apellido`, `rut`, `email`, `direccion`, `telefono`, `celular`, `departamento`, `ciudad`, `administrador` FROM `usuario` WHERE `email` = "' . $email . '" AND `clave` = "' . md5($pass . $email) . '"';
-	// $sql = 'SELECT `id`, `nombre`, `apellido`, `rut`, `email`, `direccion`, `telefono`, `celular`, `departamento`, `ciudad`, `administrador`,`clave` FROM `usuario` WHERE `email` = "' . $email . '"';// AND `clave` = "' . md5($pass . $email) . '"';
+	$db      = $GLOBALS['db'];
+	$sql     = 'SELECT `id`, `nombre`, `apellido`, `rut`, `email`, `direccion`, `telefono`, `celular`, `departamento`, `ciudad`, `administrador` FROM `usuario` WHERE `email` = "' . $email . '" AND `clave` = "' . md5($pass . $email) . '"';
 	$usuario = $db->getObjeto($sql);
 
-	// echo md5($pass . $email).'<br />';
-	// print_r($usuario);
-
 	if ($usuario) {
+		// Obtengo el pedido abierto del usuario
+		$pedido    = obtenerPedidoAbierto($usuario->id);
+		$prepedido = false;
 
-		$pedido = obtenerPedidoAbierto($usuario->id);
+		// Si hay un id temporal
+		if(isset($_SESSION['temp_userid'])) {
+			// Obtengo el pre pedido
+			$prepedido = obtenerPedidoAbierto($_SESSION['temp_userid']);
+
+			// Si tengo prepedido cambio la pertenencia por la del usuario logueado
+			if($prepedido) {
+				// var_dump($prepedido->id);
+				// var_dump($_SESSION['temp_userid']);
+				// var_dump($usuario->id);
+				$prepedido = cambiarPertenenciaDelPedido($prepedido->id, $usuario->id, $_SESSION['temp_userid']);
+			}
+
+			// var_dump($usuario);
+			// var_dump($prepedido);
+		}
+
+		// var_dump($prepedido);
+		// var_dump($pedido);
+		// exit;
+
+		// Si hay pedido y prepedido, los combino en el pedido abierto del usuario
+		if($pedido && $prepedido) {
+			$pedido = combinarPedidos($pedido, $prepedido);
+		} else {
+			$pedido = $prepedido;
+		}
 
 		$_SESSION['usuario'] = JSON_encode($usuario);
 		$_SESSION['pedido'] = JSON_encode($pedido);
 
-		return
-			array(
-			'user' => $usuario,
-			'cart' => $pedido,
-			'status' => 'LOGGED'
-			);
-
-		} else {
-
-			return array('user' => NULL, 'cart' => NULL,'status' => 'ERROR_EMAIL_OR_PASS');
-
-		}
-
+		// Redireccionar a la última página visitada donde se cargarán los datos del usuario
+		header('Location: '.$_SERVER['HTTP_REFERER']);
+	} else {
+		return array('user' => NULL, 'cart' => NULL,'status' => 'ERROR_EMAIL_OR_PASS');
+	}
 }
 
 function checkEmail ($email = NULL) {
@@ -1164,13 +1174,13 @@ function obtenerPedido ($idPedido) {
 
 function obtenerPedidoAbierto ($id_usuario = null) {
 
-	$id_us = $id_usuario ? $id_usuario : JSON_decode($_SESSION['usuario'])->id;
+	$id_us     = $id_usuario ? $id_usuario : JSON_decode($_SESSION['usuario'])->id;
 
 	$estafecha = time() - (2 * 24 * 60 * 60);
 	// obtengo el pedido abierto
-	$db = $GLOBALS['db'];
-	$sql = 'SELECT * FROM `pedido` WHERE `estado` = 4 AND `usuario_id`=' . $id_us . ' AND `fecha` >= "' . date('Y/m/d', $estafecha) .'"';
-	$pedido = $db->getObjeto($sql);
+	$db        = $GLOBALS['db'];
+	$sql       = 'SELECT * FROM `pedido` WHERE `estado` = 4 AND `usuario_id`=' . $id_us . ' AND `fecha` >= "' . date('Y/m/d', $estafecha) .'"';
+	$pedido    = $db->getObjeto($sql);
 
 	return $pedido;
 
@@ -1480,6 +1490,61 @@ function posponerPedido ($idPedido) {
 
 	return array('status' => 'STATUS_UPDATED_SUCCESSFUL');	
 
+}
+
+function cambiarPertenenciaDelPedido($pedidoid, $idNuevoUsuario, $idViejoUsuario) {
+	$db = $GLOBALS['db'];
+
+	// Cambio el id temporal de usuario del prepedido por el id del usuario logueado
+	$sql = 'UPDATE `pedido` SET `usuario_id` = '. $idNuevoUsuario .' WHERE `id` = ' . $pedidoid . ' AND `usuario_id`=' . $idViejoUsuario;
+	$db->insert($sql);
+
+	// Obtengo el pedido
+	$sql_p   = 'SELECT * FROM `pedido` WHERE `id` = ' . $pedidoid;
+	$pedido  = $db->getObjeto($sql_p);
+
+	// Lo retorno
+	return $pedido;
+}
+
+function combinarPedidos($pedido, $prepedido) {
+	$db = $GLOBALS['db'];
+
+	// var_dump($pedido);
+	// var_dump($prepedido);
+
+	$pedido_cantidad = $pedido->cantidad;
+	$pedido_total    = $pedido->total;
+
+	// Obtengo los artículos del pre pedido
+	$sql_prearticulos    = 'SELECT `articulo_pedido`.`id` AS `id_pedido`, `articulo_pedido`.`cantidad`, `articulo_pedido`.`subtotal`, `articulo`.`id`, `articulo`.`nombre`, `articulo`.`codigo`, `articulo_pedido`.`surtido`, `articulo_pedido`.`talle`, `articulo_pedido`.`color`, `articulo`.`colores_url`, `articulo`.`colores_surtidos_url`, `articulo`.`imagenes_url` FROM `articulo_pedido` JOIN `articulo` ON `articulo_pedido`.`articulo_id`=`articulo`.`id` WHERE `articulo_pedido`.`pedido_id`=' . $prepedido->id;
+	$prearticulospedidos = $db->getObjetos($sql_prearticulos);
+
+	// var_dump($prearticulospedidos);
+	// Recorro los articulos pre pedidos
+	foreach($prearticulospedidos as $art_pedido) {
+		// actualizo el total y la cantidad en el pedido
+		// var_dump($art_pedido);
+		$pedido_cantidad = $pedido_cantidad + 1;
+		$pedido_total    = $pedido_total + $art_pedido->subtotal;
+	}
+
+	// Cambio el id de los articulos pre pedidos por los del pedido
+	$sql_ap = 'UPDATE `articulo_pedido` SET `pedido_id` = '. $pedido->id .' WHERE `pedido_id` = ' . $prepedido->id;
+	$db->insert($sql_ap);
+
+	// Actualizo la cantidad y el total al pedido principal
+	$sql_p = 'UPDATE `pedido` SET `cantidad` = '. $pedido_cantidad .', `total` = '.$pedido_total.' WHERE `id` = ' . $pedido->id;
+	$db->insert($sql_p);
+
+	// Elimino el prepedido
+	$sql_dp = 'DELETE FROM `pedido` WHERE `id` = ' . $prepedido->id;
+	$db->insert($sql_dp);
+
+	$pedido_actualizado = obtenerPedidoAbierto($pedido->usuario_id);
+
+	// exit;
+	return $pedido_actualizado;
 }
 
 /* GENERAL */

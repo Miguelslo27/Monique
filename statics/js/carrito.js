@@ -3,7 +3,6 @@ $(document).on("ready", function () {
 
 	$(".cart-cmds")
 		.on("click", ".completar-pedido", function (e) {
-
 			e.preventDefault();
 			
 			// cuento los items del carrito
@@ -32,7 +31,10 @@ $(document).on("ready", function () {
 			} else {
 				showModal($("#compra-menor-al-limite"));
 			}
-
+		})
+		.on("click", ".iniciar-sesion", function(e) {
+			e.preventDefault();
+			showModal($("#first-time-user, #super-user-register"));
 		});
 
 	$('#form-confirmar-pedido').find('input[type=radio][name!=forma_de_pago]').on('click', function(e) {
