@@ -53,22 +53,6 @@ $(document).on("ready", function () {
 
 	});
 
-	// $(".access-menu:contains(Precios | Pedidos)").on("click", function (e) {
-
-	// 	if (!userStats['user']) {
-
-	// 		e.preventDefault();
-	// 		e.stopPropagation();
-
-	// 		// showModal($("#acceso-restringido"));
-	// 		$(".user-cmd-dropdown:visible").fadeOut();
-	// 		$(".user-cmd-dropdown.user-not-logged-message").fadeIn();
-
-	// 	}
-		
-	// });
-
-
 })
 .on("click", function () {
 
