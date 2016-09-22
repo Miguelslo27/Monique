@@ -115,17 +115,8 @@ case 'body-end':
 	var catalogo = blueimp.Gallery(document.getElementById('links').getElementsByTagName('a'), {
 		container: '#blueimp-image-carousel',
 		carousel: true,
-		startSlideshow: false
 	});
 
-	$(document).on("ready", function () {
-		$(".user-cmd-dropdown.bloqueo-de-catalogo")
-			.fadeIn()
-			.on("click", ".action-close", function () {
-				catalogo.play();
-				catalogo.next();
-			});
-	});
 	</script>
 		
 	<?php
