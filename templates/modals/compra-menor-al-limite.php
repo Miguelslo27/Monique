@@ -5,6 +5,7 @@ $userStats = $GLOBALS['userStats'];
 ?>
 <style>
 #compra-menor-al-limite {
+	display: none;
 	background: none repeat scroll 0 0 #fff;
     border: 1px solid;
     border-radius: 10px;

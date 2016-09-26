@@ -198,10 +198,7 @@ loadSection("header", $userStats);
 							<?php
 							} else {
 							?>
-							<a class="cart-cmd grey btn-style iniciar-sesion" data-id="<?php echo $cartItems['pedido']->id; ?>">Iniciar Sesión</a>
-							<span>ó</span>
-							<a class="cart-cmd grey btn-style registrar-usuario" href="/registro">Registrarme</a>
-							<span>para Finalizar Pedido</span>
+							<a class="cart-cmd black btn-style usuario-para-completar-pedido" data-id="<?php echo $cartItems['pedido']->id; ?>">Finalizar Pedido</a>
 							<?php
 							}
 						}

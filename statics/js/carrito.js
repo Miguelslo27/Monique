@@ -1,6 +1,5 @@
 /* global closeModal */
 $(document).on("ready", function () {
-
 	$(".cart-cmds")
 		.on("click", ".completar-pedido", function (e) {
 			e.preventDefault();
@@ -32,10 +31,53 @@ $(document).on("ready", function () {
 				showModal($("#compra-menor-al-limite"));
 			}
 		})
-		.on("click", ".iniciar-sesion", function(e) {
+		.on("click", ".usuario-para-completar-pedido", function(e) {
 			e.preventDefault();
-			showModal($("#first-time-user, #super-user-register"));
+
+			// cuento los items del carrito
+			var total_items          = $('#pedido-actual.carrito > tbody > tr').length;
+			var total_items_surtidos = $('#pedido-actual.carrito > tbody > tr > td span.valor-surtido:contains(Si)').length;
+			var total_items_packs    = $('#pedido-actual.carrito > tbody > tr > td span.valor-surtido:contains(No)').length;
+			var compra_minima		 = 0;
+			var diferencia_de_compra = 0;
+			
+			// si todo el carrito tiene solamente compras surtidas
+			// if(total_items_surtidos == total_items && total_items_packs == 0) {
+			if(total_items_surtidos > 0) {
+				compra_minima = 2500;
+			}
+			// si el carrito tiene compras mixtas
+			else {
+				compra_minima = 2000;
+			}
+			
+			diferencia_de_compra = compra_minima - parseFloat(userStats['cart']['total']);
+			$('#compra-minima').text('$ ' + compra_minima.formatMoney(2, ',', '.'));
+			$('#diferencia-de-compra').text('$ ' + diferencia_de_compra.formatMoney(2, ',', '.'));
+			
+			if(parseFloat(userStats['cart']['total']) >= compra_minima) {
+				showModal($("#pre-pedido-login"));
+			} else {
+				showModal($("#compra-menor-al-limite"));
+			}
 		});
+
+	$('#pre-pedido-continuar').on('click', function(e) {
+		e.preventDefault();
+		var $radioSelected = $('#pre-pedido-login').find('input[type=radio][name=pre-pedido-opcion]:checked').attr('id');
+
+		switch($radioSelected) {
+			case 'usuario_registrado':
+				closeModal();
+				setTimeout(function() {
+					showModal($("#first-time-user"));
+				}, 100);
+			break;
+			case 'registrar_nuevo_usuario':
+				document.location.href = '/registro';
+			break;
+		}
+	});
 
 	$('#form-confirmar-pedido').find('input[type=radio][name!=forma_de_pago]').on('click', function(e) {
 		showTheForm($(this));
@@ -43,7 +85,6 @@ $(document).on("ready", function () {
 
 	$("#completar-pedido")
 		.on("click", ".terminar-confirmacion-pedido", function (e) {
-
 			e.preventDefault();
 			var hayerrores = false;
 
@@ -182,70 +223,46 @@ $(document).on("ready", function () {
 
 			// envio el pedido a ser procesado
 			$.post("/app/pedido/completar/?id=" + $(this).data("id"), formPedido, function (data) {
-
-				// console.log(data);
-
 				$("#completar-pedido").find(".cargando").fadeOut("fast");
 				closeModal();
 				// refrescar el pedido
 				document.location.href = "/pedido/pedido-ingresado/";
-
 			});
-
 		});
 
 		$("#pedido-actual")
 			.on("click", ".acciones-carrito.accion-eliminar", function (e) {
-
 				e.preventDefault();
 				var $this = $(this);
-				// $this.find(".accion-label").text("Eliminando...");
 				$this.off("click");
 
 				$.getJSON("/app/pedido/eliminar?id_pedido=" + $(this).data("idpedido") + "&ida=" + $(this).data("itemid") + "&idp=" + $(this).data("pedidoid") + "&precioitem=" + $(this).data("precioitem") + "&cantidaditem=" + $(this).data("cantidaditem") + "&totalpedido=" + $(this).data("totalpedido") + "&totalitems=" + $(this).data("totalitems"), function (e) {
-
-					// document.location.href = document.location.href;
 					$this.parents("tr:first").remove();
-					// var totalPedido = $(".user-menu.user-cart").find(".link-label").text().replace("Pedido (", "").replace(")", "");
 
 					$(".modal#completar-pedido").find(".modal-content").load(document.location.href + " .modal-col");
 					
 					$(".user-menu.user-cart").find(".link-label").text("Pedido (" + e.articulos + ")");
 					if (e.articulos > 0) {
-
 						$(".total-value:first").text("$ " + e.total + ",00");
-
 					} else {
-
-						// $("#pedido-actual tfoot:first").remove()
 						$("#pedido-actual tbody:first").html('<tr><td colspan="6" class="no-items">No hay artículos para mostrar. Comience a comprar yendo a <a href="/categorias">Mis Pedidos Online</a>.</td></tr>');
-						// setTimeout(function () {
-
-							document.location.href = document.location.href;
-
-						// }, 2500);
-						
-
+						document.location.href = document.location.href;
 					}
 
 					document.location.href = document.location.href;
-
 				});
-
 			});
-
 });
 
 function showTheForm(check) {
-
 	var $radios = $('#form-confirmar-pedido').find('input[type=radio]');
-	$radios.each(function() {
 
+	$radios.each(function() {
 		var
-		$this = $(this),
-		isChecked = $this.is(':checked'),
-		$form = $('#' + $this.data('show')),
-		$formaPago = $('#forma_de_pago_c');
+			$this      = $(this),
+			isChecked  = $this.is(':checked'),
+			$form      = $('#' + $this.data('show')),
+			$formaPago = $('#forma_de_pago_c');
 
 		if(isChecked && $this.is(':visible')) {
 			$form.slideDown('fast', function() {
@@ -259,9 +276,7 @@ function showTheForm(check) {
 		} else {
 			$form.slideUp('fast');
 		}
-
 	});
-
 }
 
 Number.prototype.formatMoney = function(c, d, t) {
