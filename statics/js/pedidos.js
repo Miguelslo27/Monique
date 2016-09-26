@@ -23,7 +23,6 @@ $(document).on("ready", function () {
 				.show();
 
 			// le muestro los pedidos
-			console.log($("#body"));
 			$("#body").fadeIn("fast");
 		} else {
 			$("#no-logged-message").fadeIn();

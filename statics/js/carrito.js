@@ -1,5 +1,10 @@
 /* global closeModal */
 $(document).on("ready", function () {
+	if(localStorage.finalizarPedido && localStorage.finalizarPedido == 'true' && userStats['user']) {
+		localStorage.removeItem('finalizarPedido');
+		showModal($("#completar-pedido"));
+	}
+
 	$(".cart-cmds")
 		.on("click", ".completar-pedido", function (e) {
 			e.preventDefault();
@@ -65,6 +70,10 @@ $(document).on("ready", function () {
 	$('#pre-pedido-continuar').on('click', function(e) {
 		e.preventDefault();
 		var $radioSelected = $('#pre-pedido-login').find('input[type=radio][name=pre-pedido-opcion]:checked').attr('id');
+
+		if(!localStorage.finalizarPedido) {
+			localStorage.setItem('finalizarPedido', true);
+		}
 
 		switch($radioSelected) {
 			case 'usuario_registrado':
