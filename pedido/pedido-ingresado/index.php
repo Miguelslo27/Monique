@@ -38,8 +38,8 @@ loadSection("header", $userStats);
 				<h1><span class="fa fa-circle"></span>Su pedido se ha enviado con éxito <span class="fa fa-circle"></span><br><span class="fa fa-circle"></span><span class="marca">Monique.com.uy</span> <span class="fa fa-circle"></span></h1>
 				<span class="line-h">&nbsp;</span>
 				<br>
-				<h2>Revisa tu casilla de correo, en breve recibirás una copia de tu pedido.</h2>
-				<h2>Nos pondremos en contacto en breve.</h2>
+				<h2>Revisa tu casilla de correo, en breve recibirás una copia de tu pedido</h2>
+				<h2>y te contactaremos para coordinar la entrega.</h2>
 				<script>
 					setTimeout(function () {
 						// document.location.href = '/categorias';
