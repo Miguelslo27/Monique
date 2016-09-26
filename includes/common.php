@@ -408,7 +408,8 @@ function saveUser () {
 		$res = loginUser($email, $_POST['pass'], true);
 
 		// redirecciono a pedidos
-		header('Location: /categorias');
+		header('Location: '.$_SERVER['HTTP_REFERER']);
+		// header('Location: /categorias');
 
 		return $res;
 
