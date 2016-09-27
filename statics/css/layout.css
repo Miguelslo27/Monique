@@ -209,7 +209,7 @@ ul li {}
 	-moz-box-shadow: 0 0px 5px #333;
 	box-shadow: 0 0px 5px #333;
 	z-index: 999;
-	padding-bottom: 40px;
+	padding-bottom: 20px;
 
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -810,7 +810,7 @@ form .form-line.form-commands {
 	text-align: right;
 }
 form .form-line.form-commands a {
-	font-size: 12px;
+	/*font-size: 12px;*/
 	display: inline-block;
 	margin: 0 10px;
 }

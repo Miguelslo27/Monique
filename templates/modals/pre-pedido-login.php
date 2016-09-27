@@ -11,8 +11,7 @@
 		}
 		.modal#pre-pedido-login .modal-title h2 {
 			font-size: 20px;
-		    margin-left: 8px;
-		    text-align: left;
+			color: #333;
 		}
 		.modal#pre-pedido-login .form-line {
 			margin-bottom: 15px;
@@ -27,9 +26,6 @@
 		}
 		.modal#pre-pedido-login #clave-olvidada {
 			display: none;
-			float: right;
-		    line-height: 37px;
-		    margin-right: 7px;
 		}
 		.modal#pre-pedido-login form .form-line.form-commands {
 			position: relative;
