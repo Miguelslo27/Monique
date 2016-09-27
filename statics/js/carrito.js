@@ -67,6 +67,18 @@ $(document).on("ready", function () {
 			}
 		});
 
+	$('#usuario_registrado').on('click', function(e) {
+		if($(this).is(':checked')) {
+			$('#pre-orden-login-form').slideDown();
+		}
+	});
+
+	$('#registrar_nuevo_usuario').on('click', function(e) {
+		if($(this).is(':checked')) {
+			$('#pre-orden-login-form').slideUp();
+		}
+	});
+
 	$('#pre-pedido-continuar').on('click', function(e) {
 		e.preventDefault();
 		var $radioSelected = $('#pre-pedido-login').find('input[type=radio][name=pre-pedido-opcion]:checked').attr('id');
@@ -77,10 +89,11 @@ $(document).on("ready", function () {
 
 		switch($radioSelected) {
 			case 'usuario_registrado':
-				closeModal();
-				setTimeout(function() {
-					showModal($("#first-time-user"));
-				}, 100);
+				// closeModal();
+				// setTimeout(function() {
+				// 	showModal($("#first-time-user"));
+				// }, 100);
+				$('#pre-orden-login-form').submit();
 			break;
 			case 'registrar_nuevo_usuario':
 				document.location.href = '/registro';

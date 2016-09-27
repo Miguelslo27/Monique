@@ -1,6 +1,6 @@
 	<div class="modal" id="first-time-user">
 		<div class="modal-title">
-			<h2>Exclusivo Clientes Mayoristas</h2>
+			<h2>Ingreso / Registro</h2>
 			<a href="#" class="modal-close action-close"><span class="modal-close-left"></span><span class="modal-close-right"></span></a>
 			<span class="line-h">&nbsp;</span>
 		</div>
@@ -11,7 +11,7 @@
 					<span class="line-h">&nbsp;</span>
 					<form action="/index.php?a=login" method="POST" id="login-form">
 						<div class="form-line form-error">
-							<span>Alguno de los datos ingresados es incorrecto!</span>
+							<span>Alguno de los datos ingresados es incorrecto</span>
 						</div>
 						<div class="form-line">
 							<label for="email">E-Mail</label>
@@ -45,7 +45,6 @@
 								<li>Acceso a nuestros precios mayoristas</li>
 								<li>Poder realizar pedidos desde la web</li>
 								<li>Recibir ofertas y promociones exclusivas en tu email</li>
-								<li>Y si deseas, recibirás nuestro catálogo en casa cada temporada</li>
 							</ul>
 						</div>
 						<div class="form-line form-commands">
