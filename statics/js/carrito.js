@@ -70,12 +70,14 @@ $(document).on("ready", function () {
 	$('#usuario_registrado').on('click', function(e) {
 		if($(this).is(':checked')) {
 			$('#pre-orden-login-form').slideDown();
+			$('#clave-olvidada').fadeIn();
 		}
 	});
 
 	$('#registrar_nuevo_usuario').on('click', function(e) {
 		if($(this).is(':checked')) {
 			$('#pre-orden-login-form').slideUp();
+			$('#clave-olvidada').fadeOut();
 		}
 	});
 

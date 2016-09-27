@@ -5,6 +5,11 @@
 			top: 100px;
 			padding-bottom: 15px;
 		}
+		.modal#pre-pedido-login .modal-title h2 {
+			font-size: 18px;
+		    margin-left: 8px;
+		    text-align: left;
+		}
 		.modal#pre-pedido-login .form-line {
 			margin-bottom: 15px;
 		}
@@ -12,6 +17,12 @@
 			display: none;
 			padding: 8px;
 			margin: 0;
+		}
+		.modal#pre-pedido-login #pre-pedido-continuar {
+			margin-right: 10px;
+		}
+		.modal#pre-pedido-login #clave-olvidada {
+			display: none;
 		}
 		.modal#pre-pedido-login form .form-line.form-commands {
 			position: relative;
@@ -51,6 +62,7 @@
 					</form>
 					<div class="form-line">
 						<a href="#" class="btn btn-style black" id="pre-pedido-continuar">Continuar</a>
+						<a href="/recuperar-clave/" id="clave-olvidada">¿Has olvidado tu contraseña?</a>
 					</div>
 				</div>
 			</div>
