@@ -62,6 +62,12 @@
 							<label for="pass">Contraseña</label>
 							<input type="password" class="input" id="pass" name="pass">
 						</div>
+						<div class="form-line">
+							<label class="allsize" for="rememberme">
+								<input type="checkbox" id="rememberme" name="rememberme" checked="true">
+								Recúerdame en este equipo
+							</label>
+						</div>
 					</form>
 					<div class="form-line">
 						<a href="#" class="btn btn-style black" id="pre-pedido-continuar">Continuar</a>
