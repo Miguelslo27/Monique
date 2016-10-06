@@ -19,7 +19,7 @@ if ($userStats['user']->administrador == 0 ) {
 
 }
 
-$todosLosUsuarios = obtenerUsuariosExportacion(isset($_GET['id']) ? $_GET['id'] : null);
+$todosLosUsuarios = obtenerUsuariosExportacion();
 
 // output the column headings
 fputcsv($output, array('ID', 'Nombre', 'RUT', 'E-Mail', 'Dirección', 'Teléfono', 'Localidad', 'Total Compras'));

@@ -864,12 +864,14 @@ table {
 	border: 1px solid #666;
 }
 table thead td {
+	box-sizing: border-box;
 	width: 20%;
 	padding: 10px;
 	background: #666;
 	color: #fff;
 }
 table tbody td {
+	box-sizing: border-box;
 	padding: 10px;
 }
 table tbody tr:hover td {

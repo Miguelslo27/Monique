@@ -26,6 +26,7 @@ foreach ($todasLasSuscripciones as $usuario) {
 	fputcsv($output, array($usuario->id, $usuario->email));
 }
 
+fclose($output);
 exit;
 
 ?>

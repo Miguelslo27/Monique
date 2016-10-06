@@ -501,15 +501,33 @@ function checkUsers () {
 
 }
 
-function obtenerUsuarios($id = null) {
+function obtenerUsuarios() {
 
 	$db = $GLOBALS['db'];
-	$sql = 'SELECT * FROM (SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.rut, usuario.email, usuario.direccion, usuario.telefono, usuario.celular, usuario.departamento, usuario.ciudad, SUM(pedido.total) AS total_pedidos FROM pedido RIGHT JOIN usuario ON pedido.usuario_id = usuario.id WHERE pedido.estado = 1 OR pedido.usuario_id IS NULL GROUP BY usuario.id UNION SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.rut, usuario.email, usuario.direccion, usuario.telefono, usuario.celular, usuario.departamento, usuario.ciudad, NULL AS total_pedidos FROM pedido RIGHT JOIN usuario ON pedido.usuario_id = usuario.id WHERE pedido.estado != 1 GROUP BY usuario.id) AS usuarios GROUP BY usuarios.id ORDER BY `usuarios`.`total_pedidos` DESC LIMIT 1000';
+	$sql = 'SELECT * FROM (SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.rut, usuario.email, usuario.direccion, usuario.telefono, usuario.celular, usuario.departamento, usuario.ciudad, SUM(pedido.total) AS total_pedidos FROM pedido RIGHT JOIN usuario ON pedido.usuario_id = usuario.id WHERE pedido.estado = 1 OR pedido.usuario_id IS NULL GROUP BY usuario.id UNION SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.rut, usuario.email, usuario.direccion, usuario.telefono, usuario.celular, usuario.departamento, usuario.ciudad, NULL AS total_pedidos FROM pedido RIGHT JOIN usuario ON pedido.usuario_id = usuario.id WHERE pedido.estado != 1 GROUP BY usuario.id) AS usuarios GROUP BY usuarios.id ORDER BY `usuarios`.`total_pedidos` DESC';
 
 	$r = $db->getObjetos($sql);
 
 	return $r;
 
+}
+
+function obtenerTotalUsuarios() {
+	$db = $GLOBALS['db'];
+	$sql = 'SELECT COUNT(`id`) as `total` FROM `usuario`';
+
+	$r = $db->getObjeto($sql);
+
+	return $r;
+}
+
+function obtenerUsuariosPaginados($cantidadPorPagina = 20, $pagina = 1) {
+	$db = $GLOBALS['db'];
+	$sql = 'SELECT * FROM `usuario` LIMIT '.($cantidadPorPagina*($pagina - 1)).','.$cantidadPorPagina;
+
+	$r = $db->getObjetos($sql);
+
+	return $r;
 }
 
 function obtenerUsuariosExportacion() {

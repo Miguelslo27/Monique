@@ -91,3 +91,15 @@
 	margin: 0 3px;
 	cursor: pointer;
 }
+.users-table {
+	table-layout: fixed;
+}
+.users-table thead {}
+.users-table thead tr {}
+.users-table thead tr td {
+	width: auto;
+}
+.users-table thead tr th {}
+.users-table tbody {}
+.users-table tbody tr {}
+.users-table tbody tr td {}

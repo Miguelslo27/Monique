@@ -11,15 +11,33 @@ if ($userStats['user']->administrador == 0 ) {
 
 }
 
-$todasLosUsuarios = obtenerUsuarios(isset($_GET['id']) ? $_GET['id'] : null);
-$appPlace = 'online-history';
-$appSubPlace = 'administrar-usuarios';
+$appPlace          = 'online-history';
+$appSubPlace       = 'administrar-usuarios';
+
+// Paginador
+$totalUsuarios     = obtenerTotalUsuarios();
+$cantidadPorPagina = isset($_GET['cpp']) ? (int) $_GET['cpp'] : 50;
+$totalPaginas      = ceil($totalUsuarios->total / $cantidadPorPagina);
+$pagina            = isset($_GET['p']) ? (int) $_GET['p'] : 1;
+$usuarios          = obtenerUsuariosPaginados($cantidadPorPagina, $pagina);
 
 startDocument();
 loadSection("header", $userStats);
 
 ?>
 
+	<style>
+		.paginador-pagina {
+			display: inline-block;
+			height: 15px;
+			line-height: 15px;
+			text-align: center;
+			width: 35px;
+		}
+		.paginador-pagina.activa {
+			font-weight: bold;
+		}
+	</style>
 	<section id="body">
 		<div class="body-inner">
 			<div class="body-content">
@@ -30,37 +48,65 @@ loadSection("header", $userStats);
 				<a href="suscripciones-csv.php" class="btn btn-small black"><span class="fa fa-table" style="position: relative; margin-right: 10px; top: 0.5px;"></span>Descargar suscripciones en CSV</a>
 				<br>
 				<br>
-				<table cellspacing="0" cellpadding="0">
+				<div>
+					<strong>Total de usuarios:</strong> <span><?php echo $totalUsuarios->total; ?></span>
+					-
+					<strong>Página <?php echo $pagina; ?> de <?php echo $totalPaginas; ?></strong>
+				</div>
+				<div>
+					<?php
+
+					for($p = 1; $p < $totalPaginas; $p++) {
+
+					?>
+
+					<a class="paginador-pagina <?php echo ($pagina == $p ? 'activa' : '');?>" href="?p=<?php echo $p; ?>"><?php echo $p; ?></a>
+
+					<?php
+
+					}
+
+					?>
+				</div>
+				<table class="users-table" cellspacing="0" cellpadding="0">
 					<thead>
 						<tr>
-							<td style="width: 15%">Nombre</td>
-							<td style="width: 15%">RUT</td>
-							<td style="width: 15%">E-Mail</td>
-							<td style="width: 20%">Dirección</td>
-							<td style="width: 10%">Teléfonos</td>
-							<td style="width: 25%">Ubicación</td>
+							<td style="border-top: 1px solid; border-left: 1px solid; border-bottom: 1px solid;">Usuario <!-- Nombre, email, teléfono --> </td>
+							<td style="border-top: 1px solid; border-bottom: 1px solid;">Dirección <!-- Dirección, Ubicación --> </td>
+							<td style="border-top: 1px solid; border-right: 1px solid; border-bottom: 1px solid;">Otros <!-- RUT -->
 						</tr>
 					</thead>
 					<tbody>
 						<?php
 
-						foreach($todasLosUsuarios as $usuario) {
+						foreach($usuarios as $usuario) {
 
 						?>
 
 						<tr>
-							<td style="border-top: 1px solid; border-left: 1px solid;"><?php echo $usuario->nombre . ' ' . $usuario->apellido; ?></td>
-							<td style="border-top: 1px solid;"><?php echo $usuario->rut; ?></td>
-							<td style="border-top: 1px solid;"><?php echo $usuario->email; ?></td>
-							<td style="border-top: 1px solid;"><?php echo $usuario->direccion; ?></td>
-							<td style="border-top: 1px solid;"><?php echo $usuario->telefono; ?><br><?php echo $usuario->celular; ?></td>
-							<td style="border-top: 1px solid; border-right: 1px solid;"><?php echo $usuario->ciudad; ?>, <?php echo $usuario->departamento; ?></td>
-						</tr>
-						<tr>
-							<td colspan="6" style="border-bottom: 1px solid; border-left: 1px solid; border-right: 1px solid;">
-								<a href="ficha.php?id=<?php echo $usuario->id; ?>" class="btn btn-small black"><span class="fa fa-file-text-o" style="position: relative; margin-right: 10px; top: 0.5px;"></span>Ver ficha</a>
-								<a href="descargar-pdf.php?id=<?php echo $usuario->id; ?>" class="btn btn-small black"><span class="fa fa-download" style="position: relative; margin-right: 10px; top: 0.5px;"></span>Descargar ficha</a>
-								<!-- <a href="#" class="btn btn-small black"><span class="fa fa-edit" style="position: relative; margin-right: 10px; top: 0.5px;"></span>Editar sus datos</a> -->
+							<td style="border-top: 1px solid; border-left: 1px solid;">
+								<div>
+									<strong><?php echo $usuario->nombre.' '.$usuario->apellido; ?></strong>
+								</div>
+								<div>
+									<strong>Email:</strong> <span><?php echo $usuario->email; ?></span>
+								</div>
+								<div>
+									<strong>Teléfono/s:</strong> <span><?php echo $usuario->telefono.' - '.$usuario->celular; ?></span>
+								</div>
+							</td>
+							<td style="border-top: 1px solid;">
+								<div>
+									<strong>Dirección:</strong> <span><?php echo $usuario->direccion; ?></span>
+								</div>
+								<div>
+									<strong>Ubicación:</strong> <span><?php echo $usuario->ciudad.', '.$usuario->departamento; ?></span>
+								</div>
+							</td>
+							<td style="border-top: 1px solid; border-right: 1px solid;">
+								<div>
+									<strong>RUT:</strong> <span><?php echo $usuario->rut; ?></span>
+								</div>
 							</td>
 						</tr>
 
@@ -69,32 +115,8 @@ loadSection("header", $userStats);
 						}
 
 						?>
-
-						<!-- <tr>
-							<td style="border-top: 1px solid; border-left: 1px solid;">Fulanito de tal</td>
-							<td style="border-top: 1px solid;">11112222</td>
-							<td style="border-top: 1px solid;">fulanito@detal.com</td>
-							<td style="border-top: 1px solid;">Sin calle pasaje 6</td>
-							<td style="border-top: 1px solid;">24023037<br>091066416</td>
-							<td style="border-top: 1px solid; border-right: 1px solid;">Departamento, Localidad</td>
-						</tr>
-						<tr>
-							<td colspan="6" style="border-bottom: 1px solid; border-left: 1px solid; border-right: 1px solid;">
-								<a href="#" class="btn btn-small black"><span class="fa "></span>Ver ficha completa</a>
-								<a href="#" class="btn btn-small black"><span class="fa "></span>Descargar ficha completa</a>
-								<a href="#" class="btn btn-small black"><span class="fa "></span>Editar sus datos</a>
-							</td>
-						</tr> -->
 					</tbody>
 				</table>
-
-				<pre>
-				<?php
-
-				// print_r($todasLosUsuarios);
-
-				?>
-				</pre>
 
 			</div>
 		</div>
