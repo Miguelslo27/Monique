@@ -504,10 +504,27 @@ function checkUsers () {
 function obtenerUsuarios($id = null) {
 
 	$db = $GLOBALS['db'];
-	// $sql = 'SELECT `id`, `nombre`, `apellido`, `rut`, `email`, `direccion`, `telefono`, `celular`, `departamento`, `ciudad`, `administrador`, SUM(`) FROM `usuario` WHERE 1';
-	// $sql = 'SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.rut, usuario.email, usuario.direccion, usuario.telefono, usuario.celular, usuario.departamento, usuario.ciudad, SUM(pedido.total) AS total_pedidos FROM pedido JOIN usuario ON pedido.usuario_id = usuario.id GROUP BY usuario.id'
-	// $sql = 'SELECT * FROM (SELECT dev_usuario.id, dev_usuario.nombre, dev_usuario.apellido, dev_usuario.rut, dev_usuario.email, dev_usuario.direccion, dev_usuario.telefono, dev_usuario.celular, dev_usuario.departamento, dev_usuario.ciudad, SUM(dev_pedido.total) AS total_pedidos FROM dev_pedido RIGHT JOIN dev_usuario ON dev_pedido.usuario_id = dev_usuario.id WHERE dev_pedido.estado = 1 OR dev_pedido.usuario_id IS NULL GROUP BY dev_usuario.id UNION SELECT dev_usuario.id, dev_usuario.nombre, dev_usuario.apellido, dev_usuario.rut, dev_usuario.email, dev_usuario.direccion, dev_usuario.telefono, dev_usuario.celular, dev_usuario.departamento, dev_usuario.ciudad, NULL AS total_pedidos FROM dev_pedido RIGHT JOIN dev_usuario ON dev_pedido.usuario_id = dev_usuario.id WHERE dev_pedido.estado != 1 GROUP BY dev_usuario.id) AS usuarios GROUP BY usuarios.id ORDER BY `usuarios`.`total_pedidos` DESC';
+	$sql = 'SELECT * FROM (SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.rut, usuario.email, usuario.direccion, usuario.telefono, usuario.celular, usuario.departamento, usuario.ciudad, SUM(pedido.total) AS total_pedidos FROM pedido RIGHT JOIN usuario ON pedido.usuario_id = usuario.id WHERE pedido.estado = 1 OR pedido.usuario_id IS NULL GROUP BY usuario.id UNION SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.rut, usuario.email, usuario.direccion, usuario.telefono, usuario.celular, usuario.departamento, usuario.ciudad, NULL AS total_pedidos FROM pedido RIGHT JOIN usuario ON pedido.usuario_id = usuario.id WHERE pedido.estado != 1 GROUP BY usuario.id) AS usuarios GROUP BY usuarios.id ORDER BY `usuarios`.`total_pedidos` DESC LIMIT 1000';
+
+	$r = $db->getObjetos($sql);
+
+	return $r;
+
+}
+
+function obtenerUsuariosExportacion() {
+	$db = $GLOBALS['db'];
 	$sql = 'SELECT * FROM (SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.rut, usuario.email, usuario.direccion, usuario.telefono, usuario.celular, usuario.departamento, usuario.ciudad, SUM(pedido.total) AS total_pedidos FROM pedido RIGHT JOIN usuario ON pedido.usuario_id = usuario.id WHERE pedido.estado = 1 OR pedido.usuario_id IS NULL GROUP BY usuario.id UNION SELECT usuario.id, usuario.nombre, usuario.apellido, usuario.rut, usuario.email, usuario.direccion, usuario.telefono, usuario.celular, usuario.departamento, usuario.ciudad, NULL AS total_pedidos FROM pedido RIGHT JOIN usuario ON pedido.usuario_id = usuario.id WHERE pedido.estado != 1 GROUP BY usuario.id) AS usuarios GROUP BY usuarios.id ORDER BY `usuarios`.`total_pedidos` DESC';
+
+	$r = $db->getObjetos($sql);
+
+	return $r;
+}
+
+function obtenerSuscripciones() {
+
+	$db = $GLOBALS['db'];
+	$sql = 'SELECT * FROM `suscripciones`';
 
 	$r = $db->getObjetos($sql);
 

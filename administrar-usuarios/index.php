@@ -10,7 +10,7 @@ if ($userStats['user']->administrador == 0 ) {
 	return;
 
 }
-// $cartItems = $userStats['cart'] ? obtenerPedido($userStats['cart']->id) : NULL;
+
 $todasLosUsuarios = obtenerUsuarios(isset($_GET['id']) ? $_GET['id'] : null);
 $appPlace = 'online-history';
 $appSubPlace = 'administrar-usuarios';
@@ -27,6 +27,7 @@ loadSection("header", $userStats);
 				<span class="line-h"></span>
 				<br>
 				<a href="descargar-csv.php" class="btn btn-small black"><span class="fa fa-table" style="position: relative; margin-right: 10px; top: 0.5px;"></span>Descargar lista completa en CSV</a>
+				<a href="suscripciones-csv.php" class="btn btn-small black"><span class="fa fa-table" style="position: relative; margin-right: 10px; top: 0.5px;"></span>Descargar suscripciones en CSV</a>
 				<br>
 				<br>
 				<table cellspacing="0" cellpadding="0">
