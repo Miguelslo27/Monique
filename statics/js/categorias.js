@@ -48,8 +48,6 @@ $(document).on("ready", function () {
 		e.preventDefault();
 		var $deleteCategory = $("#delete-category");
 
-		console.log($deleteCategory.find("#id"));
-
 		$deleteCategory.find("#id").val($(this).data("id"));
 		$deleteCategory.find(".category-name").text($(this).data("titulo"));
 

@@ -45,6 +45,8 @@ switch($appPlace) {
 			include($templatesPath . 'modals/mensaje-nueva-forma-compra.php');
 		}
 	break;
+	default:
+		include($templatesPath.'modals/suscripcion.php');
 }
 
 ?>

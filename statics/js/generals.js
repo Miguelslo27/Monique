@@ -1,7 +1,13 @@
-function showModal ($modal) {
+function showModal ($modal, showVelo = false) {
 
 	closeModal();
 	if ($modal.length) {
+
+		if(showVelo) {
+			$(".modal-bg").addClass('velo-bg');
+		} else {
+			$(".modal-bg").removeClass('velo-bg');
+		}
 
 		$(".modal-bg").fadeIn("fast");
 		$(".modal-cont").fadeIn("fast");
@@ -52,6 +58,15 @@ $(document).on("ready", function () {
 		closeModal();
 
 	});
+
+	if(document.location.href.indexOf('?subscription=error') != -1) {
+		sessionStorage.suscribeMessageViewed = 'false';
+	}
+
+	if((!sessionStorage.suscribeMessageViewed || sessionStorage.suscribeMessageViewed != 'true') && !userStats['user']) {
+		sessionStorage.suscribeMessageViewed = 'true';
+		showModal($('#user-subscripction'), true);
+	}
 
 })
 .on("click", function () {

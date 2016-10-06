@@ -214,6 +214,47 @@ function checkEmail ($email = NULL) {
 
 }
 
+function checkSuscription ($email = NULL) {
+	if(!$email) {
+		return false;
+	}
+
+	$db = $GLOBALS['db'];
+	$sql = 'SELECT `email` FROM `suscripciones` WHERE `email` = "' . $email . '"';
+	$sus = $db->getObjeto($sql);
+
+	if(isset($sus->email) && $sus->email != '') {
+		return true;
+	} else return false;
+}
+
+function suscribir($email) {
+	$suscribed = false;
+	$email = str_replace(" ", "", strtolower($email));
+
+	// Chequear formato del email
+	if(preg_match('/^[a-z0-9]+[a-z0-cribir9_.-]+@[a-z0-9_.-]{3,}$/', $email)) {
+		// Si el email está bien formado
+		// Chequeo si ya existe usuario con ese email
+		if(checkEmail($email) || checkSuscription($email)) {
+			// Si existe, retorono suscripto = true
+			$suscribed = true;
+		} else {
+			// Si no existe, lo suscribo
+			$db  = $GLOBALS['db'];
+			$sql = 'INSERT INTO `suscripciones` (`email`) VALUES ("'.$email.'")';
+			$sus = $db->insert($sql);
+			
+			// si se suscribió correctamente retornar suscripto = true
+			if($sus) {
+				$suscribed = true;
+			}
+		}
+	}
+
+	return $suscribed;
+}
+
 function enviarDatosDeRecuperacion ($email) {
 
 	$asunto = "Solicitud de recuperación de contraseña";
