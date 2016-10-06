@@ -52,6 +52,8 @@ loadSection("header", $userStats);
 					<strong>Total de usuarios:</strong> <span><?php echo $totalUsuarios->total; ?></span>
 					-
 					<strong>Página <?php echo $pagina; ?> de <?php echo $totalPaginas; ?></strong>
+					-
+					<strong>Registros por página:</strong> <a class="paginador-pagina <?php echo ($cantidadPorPagina == 50 ? 'activa' : ''); ?>" href="?p=1&cpp=50">50</a> | <a class="paginador-pagina <?php echo ($cantidadPorPagina == 100 ? 'activa' : ''); ?>" href="?p=1&cpp=100">100</a> | <a class="paginador-pagina <?php echo ($cantidadPorPagina == 500 ? 'activa' : ''); ?>" href="?p=1&cpp=500">500</a>
 				</div>
 				<div>
 					<?php
@@ -60,7 +62,7 @@ loadSection("header", $userStats);
 
 					?>
 
-					<a class="paginador-pagina <?php echo ($pagina == $p ? 'activa' : '');?>" href="?p=<?php echo $p; ?>"><?php echo $p; ?></a>
+					<a class="paginador-pagina <?php echo ($pagina == $p ? 'activa' : ''); ?>" href="?p=<?php echo $p; ?><?php echo (isset($_GET['cpp']) ? '&cpp='.$_GET['cpp'] : ''); ?>"><?php echo $p; ?></a>
 
 					<?php
 
