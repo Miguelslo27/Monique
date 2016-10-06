@@ -4374,3 +4374,19 @@
 [19-Sep-2016 23:02:48 Etc/GMT] PHP Notice:  Trying to get property of non-object in /home/moniquecom/public_html/templates/user/logged-cmds.php on line 40
 [19-Sep-2016 23:03:53 Etc/GMT] PHP Notice:  Trying to get property of non-object in /home/moniquecom/public_html/templates/user/logged-cmds.php on line 40
 [19-Sep-2016 23:04:11 Etc/GMT] PHP Notice:  Trying to get property of non-object in /home/moniquecom/public_html/templates/user/logged-cmds.php on line 40
+[29-Sep-2016 21:16:39 Etc/GMT] PHP Warning:  opendir(../statics/images/catalogos/anteriores/0 - Primavera - Verano 2015): failed to open dir: No such file or directory in /home/moniquecom/public_html/catalogo/index.php on line 43
+[29-Sep-2016 21:16:39 Etc/GMT] PHP Warning:  readdir() expects parameter 1 to be resource, boolean given in /home/moniquecom/public_html/catalogo/index.php on line 46
+[30-Sep-2016 07:39:04 Etc/GMT] PHP Warning:  opendir(../statics/images/catalogos/anteriores/0 - Primavera - Verano 2015): failed to open dir: No such file or directory in /home/moniquecom/public_html/catalogo/index.php on line 43
+[30-Sep-2016 07:39:04 Etc/GMT] PHP Warning:  readdir() expects parameter 1 to be resource, boolean given in /home/moniquecom/public_html/catalogo/index.php on line 46
+[30-Sep-2016 13:57:46 Etc/GMT] PHP Warning:  opendir(../statics/images/catalogos/anteriores/0 - Primavera - Verano 2015): failed to open dir: No such file or directory in /home/moniquecom/public_html/catalogo/index.php on line 43
+[30-Sep-2016 13:57:46 Etc/GMT] PHP Warning:  readdir() expects parameter 1 to be resource, boolean given in /home/moniquecom/public_html/catalogo/index.php on line 46
+[01-Oct-2016 11:15:19 Etc/GMT] PHP Warning:  opendir(../statics/images/catalogos/anteriores/1 - Primavera - Verano 2015): failed to open dir: No such file or directory in /home/moniquecom/public_html/catalogo/index.php on line 43
+[01-Oct-2016 11:15:19 Etc/GMT] PHP Warning:  readdir() expects parameter 1 to be resource, boolean given in /home/moniquecom/public_html/catalogo/index.php on line 46
+[02-Oct-2016 23:12:30 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'moniquec_db_adm'@'localhost' (using password: YES) in /home/moniquecom/public_html/includes/db.class.php on line 31
+[02-Oct-2016 23:12:30 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'moniquec_db_adm'@'localhost' (using password: YES) in /home/moniquecom/public_html/includes/db.class.php on line 31
+[02-Oct-2016 23:12:38 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'moniquec_db_adm'@'localhost' (using password: YES) in /home/moniquecom/public_html/includes/db.class.php on line 31
+[02-Oct-2016 23:12:41 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'moniquec_db_adm'@'localhost' (using password: YES) in /home/moniquecom/public_html/includes/db.class.php on line 31
+[03-Oct-2016 02:42:24 Etc/GMT] PHP Warning:  opendir(../statics/images/catalogos/anteriores/5 - Primavera - Verano 2013): failed to open dir: No such file or directory in /home/moniquecom/public_html/catalogo/index.php on line 43
+[03-Oct-2016 02:42:24 Etc/GMT] PHP Warning:  readdir() expects parameter 1 to be resource, boolean given in /home/moniquecom/public_html/catalogo/index.php on line 46
+[04-Oct-2016 12:47:27 Etc/GMT] PHP Notice:  Undefined index: c in /home/moniquecom/public_html/catalogo/index.php on line 33
+[04-Oct-2016 12:47:27 Etc/GMT] PHP Notice:  Undefined index: c in /home/moniquecom/public_html/catalogo/index.php on line 39
