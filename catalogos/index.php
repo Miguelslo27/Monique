@@ -95,7 +95,6 @@ loadSection("header", $userStats);
 			}
 
 			?>
-			<!-- <span class="line-h"></span> -->
 			<div class="body-content">
 				
 				<?php
@@ -105,66 +104,40 @@ loadSection("header", $userStats);
 				?>
 
 				<h2>Actual</h2>
-				<!-- <span class="line-h"></span> -->
 
 				<?php
 
 				$directorioActual = '../statics/images/catalogos/actual';
+				$dir = opendir($directorioActual);
+				$arc = readdir($dir);
 
-				// if (file_exists($directorioActual . '/1.jpg')) {
+				$imagenesDelCatalogo = array();
 
-					// si tengo el archivo 1.jpg lo muestro
-					?>
+				while ($imagen = readdir($dir)) {
 
-					<!-- <div class="catalogo-preview">
-						<a href="/catalogo?c=actual"><img src="<?php echo $directorioActual . '/1.jpg'; ?>"></a>
-					</div> -->
+					if (!is_dir($imagen)) {
 
-					<?php
-
-				// } else {
-
-					// sino muestro el primero que encuentre
-					$dir = opendir($directorioActual);
-					$arc = readdir($dir);
-
-					$imagenesDelCatalogo = array();
-
-					while ($imagen = readdir($dir)) {
-
-						if (!is_dir($imagen)) {
-
-							$imagenesDelCatalogo[] = $imagen;
-
-						}
+						$imagenesDelCatalogo[] = $imagen;
 
 					}
 
-					natcasesort($imagenesDelCatalogo);
+				}
 
-					$indice = 0;
-					$auxImagenes = array();
-					foreach ($imagenesDelCatalogo as $img) {
+				natcasesort($imagenesDelCatalogo);
 
-						$auxImagenes[$indice] = $img;
-						$indice ++;
+				$indice = 0;
+				$auxImagenes = array();
+				foreach ($imagenesDelCatalogo as $img) {
 
-					}
+					$auxImagenes[$indice] = $img;
+					$indice ++;
 
-					// if (!is_dir($arc)) {
-
-					?>
-					<div class="catalogo-preview">
-						<a href="/catalogo?c=actual"><img src="<?php echo $directorioActual . '/' . $auxImagenes[0]; ?>"></a>
-					</div>
-					<?php
-
-					// }
-
-				// }
+				}
 
 				?>
-				<!-- <span class="line-h"></span> -->
+				<div class="catalogo-preview">
+					<a href="/catalogo?c=actual"><img src="<?php echo $directorioActual . '/' . $auxImagenes[0]; ?>"></a>
+				</div>
 				<br />
 				<?php } ?>
 				<?php
@@ -173,7 +146,6 @@ loadSection("header", $userStats);
 
 				?>
 				<h2>Anteriores</h2>
-				<!-- <span class="line-h"></span> -->
 				<?php
 
 				}
@@ -203,65 +175,42 @@ loadSection("header", $userStats);
 
 					foreach ($carpetasCatalogosAnteriores as $carp) {
 
-						// if (file_exists($directorioAnteriores . '/' . $carp . '/1.jpg')) {
+						// sino muestro el primero que encuentre
+						$dir = opendir($directorioAnteriores . '/' . $carp);
+						$arc = readdir($dir);
 
-							// si tengo el archivo 1.jpg lo muestro
-							?>
+						$imagenesDelCatalogo = array();
 
-							<!-- <div class="catalogo-preview">
-								<a href="/catalogo?c=<?php echo $carp; ?>"><img src="<?php echo $directorioAnteriores . '/' . $carp . '/1.jpg'; ?>"></a>
-							</div> -->
+						while ($imagen = readdir($dir)) {
 
-							<?php
+							if (!is_dir($imagen)) {
 
-						// } else {
-
-							// sino muestro el primero que encuentre
-							$dir = opendir($directorioAnteriores . '/' . $carp);
-							$arc = readdir($dir);
-
-							// $dir = opendir($directorioActual);
-							// $arc = readdir($dir);
-
-							$imagenesDelCatalogo = array();
-
-							while ($imagen = readdir($dir)) {
-
-								if (!is_dir($imagen)) {
-
-									$imagenesDelCatalogo[] = $imagen;
-
-								}
+								$imagenesDelCatalogo[] = $imagen;
 
 							}
 
-							natcasesort($imagenesDelCatalogo);
+						}
+
+						natcasesort($imagenesDelCatalogo);
 
 
-							$indice = 0;
-							$auxImagenes = array();
-							foreach ($imagenesDelCatalogo as $img) {
+						$indice = 0;
+						$auxImagenes = array();
+						foreach ($imagenesDelCatalogo as $img) {
 
-								$auxImagenes[$indice] = $img;
-								$indice ++;
+							$auxImagenes[$indice] = $img;
+							$indice ++;
 
-							}
+						}
 
-							// print_r($auxImagenes);
-							// if (!is_dir($arc)) {
-
-							?>
-							<div class="catalogo-preview">
-								<a href="/catalogo?c=<?php echo $carp; ?>"><img src="<?php echo $directorioAnteriores . '/' . $carp . '/' . $auxImagenes[0]; ?>" style="box-shadow: 0 0 5px #000"></a>
-								<a href="/catalogo?c=<?php echo $carp; ?>" style="text-transform: capitalize; font-size: 16px; text-align: center; text-decoration: none; display: block; margin-top: 8px;">
-									- <?php echo preg_replace("/^[0-9]* - /", "", $carp); ?> -
-								</a>
-							</div>
-							<?php
-
-							// }
-
-						// }
+						?>
+						<div class="catalogo-preview">
+							<a href="/catalogo?c=<?php echo rawurlencode($carp); ?>"><img src="<?php echo $directorioAnteriores . '/' . rawurlencode($carp) . '/' . $auxImagenes[0]; ?>" style="box-shadow: 0 0 5px #000"></a>
+							<a href="/catalogo?c=<?php echo $carp; ?>" style="text-transform: capitalize; font-size: 16px; text-align: center; text-decoration: none; display: block; margin-top: 8px;">
+								- <?php echo utf8_encode (preg_replace("/^[0-9]* - /", "", $carp)); ?> -
+							</a>
+						</div>
+						<?php
 
 					}
 

@@ -1,4 +1,4 @@
-function showModal ($modal, showVelo = false) {
+function showModal ($modal, showVelo) {
 
 	closeModal();
 	if ($modal.length) {
@@ -59,11 +59,18 @@ $(document).on("ready", function () {
 
 	});
 
+	$(".modal .action-hide-suscription").on("click", function (e) {
+
+		e.preventDefault();
+		localStorage.suscribeMessageViewed = 'true';
+
+	});
+
 	if(document.location.href.indexOf('?subscription=error') != -1) {
 		sessionStorage.suscribeMessageViewed = 'false';
 	}
 
-	if((!sessionStorage.suscribeMessageViewed || sessionStorage.suscribeMessageViewed != 'true') && !userStats['user']) {
+	if((!sessionStorage.suscribeMessageViewed || sessionStorage.suscribeMessageViewed != 'true') && (!localStorage.suscribeMessageViewed || localStorage.suscribeMessageViewed != 'true') && !userStats['user']) {
 		sessionStorage.suscribeMessageViewed = 'true';
 		showModal($('#user-subscripction'), true);
 	}

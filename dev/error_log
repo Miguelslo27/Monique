@@ -1,0 +1,13 @@
+[20-Sep-2016 17:08:00 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'appsxxi'@'localhost' (using password: YES) in /home/moniquecom/public_html/dev/includes/db.class.php on line 31
+[20-Sep-2016 17:08:05 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'appsxxi'@'localhost' (using password: YES) in /home/moniquecom/public_html/dev/includes/db.class.php on line 31
+[20-Sep-2016 17:08:17 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'appsxxi'@'localhost' (using password: YES) in /home/moniquecom/public_html/dev/includes/db.class.php on line 31
+[20-Sep-2016 17:08:27 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'appsxxi'@'localhost' (using password: YES) in /home/moniquecom/public_html/dev/includes/db.class.php on line 31
+[20-Sep-2016 17:08:27 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'appsxxi'@'localhost' (using password: YES) in /home/moniquecom/public_html/dev/includes/db.class.php on line 31
+[20-Sep-2016 17:08:28 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'appsxxi'@'localhost' (using password: YES) in /home/moniquecom/public_html/dev/includes/db.class.php on line 31
+[20-Sep-2016 17:08:34 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'appsxxi'@'localhost' (using password: YES) in /home/moniquecom/public_html/dev/includes/db.class.php on line 31
+[21-Sep-2016 03:22:32 Etc/GMT] PHP Notice:  Trying to get property of non-object in /home/moniquecom/public_html/dev/templates/user/logged-cmds.php on line 40
+[12-Oct-2016 18:41:04 Etc/GMT] PHP Notice:  Undefined variable: db_dbase in /home/moniquecom/public_html/dev/includes/common.php on line 82
+[12-Oct-2016 18:41:04 Etc/GMT] PHP Notice:  Undefined variable: dbaseHost in /home/moniquecom/public_html/dev/includes/common.php on line 83
+[12-Oct-2016 18:41:04 Etc/GMT] PHP Notice:  Undefined variable: dbaseUser in /home/moniquecom/public_html/dev/includes/common.php on line 84
+[12-Oct-2016 18:41:04 Etc/GMT] PHP Notice:  Undefined variable: dbasePass in /home/moniquecom/public_html/dev/includes/common.php on line 86
+[12-Oct-2016 18:41:04 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'moniquecom'@'localhost' (using password: NO) in /home/moniquecom/public_html/dev/includes/db.class.php on line 31

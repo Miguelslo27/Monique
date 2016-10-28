@@ -65,9 +65,16 @@
 		    padding: 0;
 		    width: 50px;
 		}
+		#user-subscripction .modal-title .modal-close.action-hide-suscription {
+			width: auto;
+			float: right;
+			margin-right: 35px;
+			line-height: 35px;
+		}
 	</style>
 	<div class="modal" id="user-subscripction">
 		<div class="modal-title">
+			<a href="#" class="modal-close action-close action-hide-suscription">Ya estoy suscripto</a>
 			<a href="#" class="modal-close action-close"><span class="modal-close-left"></span><span class="modal-close-right"></span></a>
 		</div>
 		<div class="modal-content cols cols-2">

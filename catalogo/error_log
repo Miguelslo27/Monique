@@ -4390,3 +4390,14 @@
 [03-Oct-2016 02:42:24 Etc/GMT] PHP Warning:  readdir() expects parameter 1 to be resource, boolean given in /home/moniquecom/public_html/catalogo/index.php on line 46
 [04-Oct-2016 12:47:27 Etc/GMT] PHP Notice:  Undefined index: c in /home/moniquecom/public_html/catalogo/index.php on line 33
 [04-Oct-2016 12:47:27 Etc/GMT] PHP Notice:  Undefined index: c in /home/moniquecom/public_html/catalogo/index.php on line 39
+[08-Oct-2016 01:28:25 Etc/GMT] PHP Warning:  opendir(../statics/images/catalogos/anteriores/4 - Primavera - Verano 2013): failed to open dir: No such file or directory in /home/moniquecom/public_html/catalogo/index.php on line 43
+[08-Oct-2016 01:28:25 Etc/GMT] PHP Warning:  readdir() expects parameter 1 to be resource, boolean given in /home/moniquecom/public_html/catalogo/index.php on line 46
+[09-Oct-2016 11:40:11 Etc/GMT] PHP Warning:  opendir(../statics/images/catalogos/anteriores/0 - Primavera - Verano 2015): failed to open dir: No such file or directory in /home/moniquecom/public_html/catalogo/index.php on line 43
+[09-Oct-2016 11:40:11 Etc/GMT] PHP Warning:  readdir() expects parameter 1 to be resource, boolean given in /home/moniquecom/public_html/catalogo/index.php on line 46
+[09-Oct-2016 17:57:19 Etc/GMT] PHP Warning:  opendir(../statics/images/catalogos/anteriores/actual'A=0): failed to open dir: No such file or directory in /home/moniquecom/public_html/catalogo/index.php on line 43
+[09-Oct-2016 17:57:19 Etc/GMT] PHP Warning:  readdir() expects parameter 1 to be resource, boolean given in /home/moniquecom/public_html/catalogo/index.php on line 46
+[09-Oct-2016 22:14:48 Etc/GMT] PHP Notice:  Undefined index: c in /home/moniquecom/public_html/catalogo/index.php on line 33
+[09-Oct-2016 22:14:48 Etc/GMT] PHP Notice:  Undefined index: c in /home/moniquecom/public_html/catalogo/index.php on line 39
+[13-Oct-2016 02:43:35 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'moniquec_db_adm'@'localhost' (using password: YES) in /home/moniquecom/public_html/includes/db.class.php on line 31
+[13-Oct-2016 02:44:56 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'moniquec_db_adm'@'localhost' (using password: YES) in /home/moniquecom/public_html/includes/db.class.php on line 31
+[13-Oct-2016 02:45:06 Etc/GMT] PHP Warning:  mysql_connect(): Access denied for user 'moniquec_db_adm'@'localhost' (using password: YES) in /home/moniquecom/public_html/includes/db.class.php on line 31
