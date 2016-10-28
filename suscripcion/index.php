@@ -10,6 +10,14 @@ $appSubPlace = 'subscription';
 
 if (!$suscripcion) {
 	header('Location: /?subscription=error');
+} else {
+	?>
+
+	<script>
+		localStorage.suscribeMessageViewed = 'true';
+	</script>
+
+	<?php
 }
 
 startDocument();
